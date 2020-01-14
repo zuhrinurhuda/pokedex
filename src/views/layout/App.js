@@ -1,6 +1,8 @@
 import React from 'react';
 import { Layout, Input, Row, Col, Icon, Menu } from 'antd';
 
+import PokemonList from 'views/pages/PokemonList';
+
 import './App.css';
 
 const { Header, Content, Footer } = Layout;
@@ -70,6 +72,7 @@ function App() {
           maxWidth: '480px',
         }}
       >
+        <PokemonList />
       </Content>
       <Footer
         style={{
