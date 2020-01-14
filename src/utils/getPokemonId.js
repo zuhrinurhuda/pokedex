@@ -1,0 +1,1 @@
+export default url => url.split('/')[url.split('/').length - 2];
