@@ -6,7 +6,7 @@ export const PokemonListWrapper = styled(Row)`
 `;
 
 export const PokemonCardWrapper = styled(Col)`
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 `;
 

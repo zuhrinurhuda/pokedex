@@ -2,20 +2,19 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from 'antd';
-import { createStructuredSelector } from 'reselect';
+import { Link } from 'react-router-dom';
 
 import { PokemonCard } from 'views/components';
-import { pokemonListRequested } from 'state/redux/pokemon/actions';
-import pokemonPageSelector from 'state/redux/pokemon/selectors';
-import {
-  PokemonListWrapper,
-  PokemonCardWrapper
-} from './styles';
+import { pokemonListRequested, pokemonListCleared } from 'state/redux/pokemon/actions';
+import { newPokemonlistSelector } from 'state/redux/pokemon/selectors';
+import { PokemonListWrapper, PokemonCardWrapper } from './styles';
 
 const PokemonList = props => {
-  const { fetchPokemonList, pokemon } = props;
-  const { pokemonList } = pokemon;
-
+  const {
+    fetchPokemonList,
+    pokemonList,
+    resetPokemonList
+  } = props;
   // console.log('props', props);
   useEffect(() => {
     fetchPokemonList(pokemonList.params);
@@ -28,27 +27,25 @@ const PokemonList = props => {
     })
   };
 
+  useEffect(() => () => resetPokemonList(), [resetPokemonList]);
+
   return (
     <PokemonListWrapper
       type="flex"
       justify="start"
-      gutter={24}
+      gutter={12}
     >
       {pokemonList.results.map(pokemon => (
-        <PokemonCardWrapper
-          key={pokemon.id}
-          span={12}
-        >
-          <PokemonCard
-            isLoading={pokemonList.isLoading}
-            pokemon={pokemon}
-          />
+        <PokemonCardWrapper key={pokemon.id} span={12}>
+          <Link to={`/${pokemon.name}`}>
+            <PokemonCard pokemon={pokemon} />
+          </Link>
         </PokemonCardWrapper>
       ))}
       <Button
         block
         size="large"
-        style={{ margin: 12 }}
+        style={{ margin: 6 }}
         onClick={handleLoadMore}
         loading={pokemonList.isLoading}
       >
@@ -58,17 +55,18 @@ const PokemonList = props => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({
-  pokemon: pokemonPageSelector(),
+const mapStateToProps = state => ({
+  pokemonList: newPokemonlistSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchPokemonList: params => dispatch(pokemonListRequested(params)),
+  resetPokemonList: () => dispatch(pokemonListCleared()),
 });
 
 PokemonList.propsTypes = {
   fetchPokemonList: PropTypes.func.isRequired,
-  pokemon: PropTypes.objectOf(PropTypes.any).isRequired,
+  pokemonList: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PokemonList);
