@@ -1,8 +1,8 @@
 import React from 'react';
 import { Layout, Input, Row, Col, Icon, Menu } from 'antd';
+import { Route } from 'react-router-dom';
 
-import PokemonList from 'views/pages/PokemonList';
-
+import routes from 'routes';
 import './App.css';
 
 const { Header, Content, Footer } = Layout;
@@ -18,6 +18,7 @@ function App() {
           position: 'fixed',
           width: '100%',
           zIndex: 1,
+          boxShadow: 'rgba(0, 0, 0, 0.12) 0px 2px 4px 0px',
         }}
       >
         <Row type="flex" justify="space-between">
@@ -68,11 +69,11 @@ function App() {
       <Content
         style={{
           padding: '0 12px',
-          margin: '64px auto',
+          margin: '58px auto',
           maxWidth: '480px',
         }}
       >
-        <PokemonList />
+        {routes.map(route => <Route key={route.path} {...route} />)}
       </Content>
       <Footer
         style={{

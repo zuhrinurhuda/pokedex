@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom'; 
 
 import App from 'views/layout/App';
 import configureStore from 'state/redux/configureStore';
@@ -13,7 +14,9 @@ store.runSaga(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );
