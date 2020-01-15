@@ -20,11 +20,17 @@ const pokemonSpeciesSelector = createSelector(
   pokemon => pokemon.pokemonSpecies,
 );
 
+const pokemonDetailSelector = createSelector(
+  pokemonSelector,
+  pokemon => pokemon.pokemonDetail,
+);
+
 export const newPokemonlistSelector = createSelector(
+  pokemonListSelector,
   pokemonListDataSelector,
   pokemonSpeciesSelector,
-  (pokemonListData, pokemonSpecies) => {
-    return pokemonListData.map((pokemon, index) => {
+  (pokemonList, pokemonListData, pokemonSpecies) => {
+    const newPokemonListData = pokemonListData.map((pokemon, index) => {
       const id = getPokemonId(pokemon.url);
       return {
         ...pokemon,
@@ -33,22 +39,23 @@ export const newPokemonlistSelector = createSelector(
         habitat: pokemonSpecies[index].habitat.name,
         color: pokemonSpecies[index].color.name,
       }
-    })
+    });
+
+    return {
+      ...pokemonList,
+      results: [...newPokemonListData],
+    }
   },
 );
 
+export const newPokemonDetailSelector = createSelector(
+  pokemonDetailSelector,
+  pokemonSpeciesSelector,
+  (pokemonDetail, pokemonSpecies) => {
+    const filteredSpecies = pokemonSpecies.find(
+      species => species.id === pokemonDetail.id
+    );
 
-const pokemonPageSelector = () => 
-  createSelector(
-    pokemonSelector,
-    newPokemonlistSelector,
-    (state, pokemonList) => ({
-      ...state,
-      pokemonList: {
-        ...state.pokemonList,
-        results: pokemonList,
-      },
-    }),
-  );
-
-export default pokemonPageSelector;
+    return { ...pokemonDetail, ...filteredSpecies };
+  },
+);

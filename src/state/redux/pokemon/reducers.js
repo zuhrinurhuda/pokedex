@@ -4,6 +4,10 @@ import {
   POKEMON_LIST_REQUESTED,
   POKEMON_LIST_SUCCEEDED,
   POKEMON_LIST_FAILED,
+  POKEMON_LIST_CLEARED,
+  POKEMON_DETAIL_REQUESTED,
+  POKEMON_DETAIL_SUCCEEDED,
+  POKEMON_DETAIL_FAILED,
 } from './constants';
 
 export const initialState = {
@@ -16,6 +20,20 @@ export const initialState = {
     results: [],
   },
   pokemonSpecies: [],
+  pokemonDetail: {
+    isLoading: false,
+    flavor_text_entries: [],
+    color: {
+      name: '',
+    },
+    habitat: {
+      name: '',
+    },
+    shape: {
+      name: '',
+    },
+    sprites: [],
+  },
 };
 
 const pokemonReducers = (state = initialState, action) => 
@@ -43,6 +61,24 @@ const pokemonReducers = (state = initialState, action) =>
         break;
       case POKEMON_LIST_FAILED:
         draft.pokemonList.isLoading = false;
+        break;
+      case POKEMON_LIST_CLEARED:
+        draft.pokemonList = initialState.pokemonList;
+        break;
+
+      // Pokemon detail reducers
+      case POKEMON_DETAIL_REQUESTED:
+        draft.pokemonDetail.isLoading = true;
+        break;
+      case POKEMON_DETAIL_SUCCEEDED:
+        draft.pokemonDetail = {
+          ...draft.pokemonDetail,
+          ...action.data,
+          isLoading: false,
+        };
+        break;
+      case POKEMON_DETAIL_FAILED:
+        draft.pokemonDetail.isLoading = false;
         break;
       default:
         return draft;
