@@ -37,10 +37,10 @@ export const pokemonListCleared = () => {
 };
 
 // Fetch pokemon detail actions
-export const pokemonDetailRequested = id => {
+export const pokemonDetailRequested = name => {
   return {
     type: POKEMON_DETAIL_REQUESTED,
-    id,
+    name,
   };
 };
 

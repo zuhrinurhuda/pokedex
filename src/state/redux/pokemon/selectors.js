@@ -15,14 +15,14 @@ const pokemonListDataSelector = createSelector(
   pokemonList => pokemonList.results,
 );
 
-const pokemonSpeciesSelector = createSelector(
-  pokemonSelector,
-  pokemon => pokemon.pokemonSpecies,
-);
-
 const pokemonDetailSelector = createSelector(
   pokemonSelector,
   pokemon => pokemon.pokemonDetail,
+);
+
+export const pokemonSpeciesSelector = createSelector(
+  pokemonSelector,
+  pokemon => pokemon.pokemonSpecies,
 );
 
 export const newPokemonlistSelector = createSelector(

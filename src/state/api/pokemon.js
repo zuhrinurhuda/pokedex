@@ -10,18 +10,18 @@ export const pokemonListApi = async params => {
   };
 };
 
-export const pokemonSpeciesApi = async id => {
+export const pokemonSpeciesApi = async name => {
   try {
-    const { data } = await axios(`${POKEMON.SPECIES}${id}`);
+    const { data } = await axios(`${POKEMON.SPECIES}${name}`);
     return data;
   } catch (error) {
     throw error;
   };
 };
 
-export const pokemonDetailApi = async id => {
+export const pokemonDetailApi = async name => {
   try {
-    const { data } = await axios(`${POKEMON.DETAIL}${id}`);
+    const { data } = await axios(`${POKEMON.DETAIL}${name}`);
     return data;
   } catch (error) {
     throw error;

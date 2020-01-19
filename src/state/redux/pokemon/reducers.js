@@ -33,11 +33,15 @@ export const initialState = {
       name: '',
     },
     sprites: [],
+    types: [],
+    abilities: [],
+    stats: [],
   },
 };
 
 const pokemonReducers = (state = initialState, action) => 
   produce(state, draft => {
+    // console.log('action', action)
     switch(action.type) {
       // Pokemon list reducers
       case POKEMON_LIST_REQUESTED:
@@ -64,6 +68,7 @@ const pokemonReducers = (state = initialState, action) =>
         break;
       case POKEMON_LIST_CLEARED:
         draft.pokemonList = initialState.pokemonList;
+        draft.pokemonSpecies = initialState.pokemonSpecies;
         break;
 
       // Pokemon detail reducers
@@ -73,9 +78,10 @@ const pokemonReducers = (state = initialState, action) =>
       case POKEMON_DETAIL_SUCCEEDED:
         draft.pokemonDetail = {
           ...draft.pokemonDetail,
-          ...action.data,
+          ...action.data.pokemonDetail,
           isLoading: false,
         };
+        draft.pokemonSpecies = [action.data.pokemonSpecies];
         break;
       case POKEMON_DETAIL_FAILED:
         draft.pokemonDetail.isLoading = false;

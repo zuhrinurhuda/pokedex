@@ -1,4 +1,4 @@
-import { call, put, takeLatest, all } from 'redux-saga/effects';
+import { call, put, select, takeLatest, all } from 'redux-saga/effects';
 
 import getPokemonId from 'utils/getPokemonId';
 import {
@@ -16,6 +16,7 @@ import {
   pokemonDetailSucceeded,
   pokemonDetailfailed,
 } from './actions';
+import { pokemonSpeciesSelector } from './selectors';
 
 export function* fetchPokemonList({ params }) {
   try {
@@ -31,10 +32,16 @@ export function* fetchPokemonList({ params }) {
   };
 };
 
-export function* fetchPokemonDetail({ id }) {
+export function* fetchPokemonDetail({ name }) {
   try {
-    const pokemonDetail = yield call(pokemonDetailApi, id);
-    yield put(pokemonDetailSucceeded(pokemonDetail));
+    const pokemonDetail = yield call(pokemonDetailApi, name);
+    let pokemonSpecies = yield select(pokemonSpeciesSelector);
+    
+    if (!pokemonSpecies.length) {
+      pokemonSpecies = yield call(pokemonSpeciesApi, name)
+    }
+
+    yield put(pokemonDetailSucceeded({ pokemonDetail, pokemonSpecies }));
   } catch (error) {
     yield put(pokemonDetailfailed(error));
   };
